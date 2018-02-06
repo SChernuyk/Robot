@@ -1,41 +1,34 @@
-puts "Hello, I'm personal robotic system company Val-Tek, please, give me name"
-name_r = gets
-puts "Thank you, now my name is #{name_r}"
-puts "I have the commands that I will perform for you to get\n a list of commands,enter 'command':"
-
 class Command
-  def drive_hand
-    puts "'sound enable engine'"
-    sleep 2
-    puts "Complete"
+
+  def initialize
+    puts "Hello, I'm personal robotic system company Val-Tek, please, give me name"
+    name_r = gets
+    puts "Thank you, now my name is #{name_r}"
+    puts "I have the commands that I will perform for you to get\n a list of commands,enter 'command':"
   end
 
-  def drive_foot
+  def drive(part_of_body)
     puts "'sound enable engine'"
-    sleep 2
-    puts "Complete"
   end
 
-  def open_eyes
+  def open(part_of_body)
     puts "'Sound of the closing flap'"
-    sleep 2
-    puts "Complete"
   end
 
-  def enable_laser
+  def action(method,part_of_body)
+    if method == "drive"
+      drive(part_of_body)
+    else
+      open(part_of_body) if part_of_body == "eyes"
+    end
+  end
+
+  def enable(gun)
     puts "System in perfect condition"
     puts "In order to shoot, write a shot"
-    shoot"Laser"
+    shoot gun
   end
 
-  def enable_mashinegun
-    puts "System in perfect condition"
-    puts "In order to shoot, write a shot"
-    shoot"Mashinegun"
- end
-  def russian_bad_word
-
-  end
   def shoot(gun)
     answer = gets.chomp
     if answer == "shot"
@@ -49,7 +42,7 @@ class Command
     end
   end
 
-  def random_number
+  def random
     x=rand(100)
     puts x
   end
@@ -57,34 +50,48 @@ end
 
 command1 = Command.new
 
-loop do
-
 list_command = gets.chomp
 
+loop do
+
   if list_command == "command"
-    puts " 'drive hand',\n 'drive foot',\n 'open eyes',\n 'enable lazer',\n 'enable mashinegun',\n 'random number' 1-100 "
-
-      else
+    puts " 'drive hand',\n 'drive foot',\n 'open eyes',\n 'enable lazer',\n 'enable mashinegun',\n 'random' 1-100 "
+  else
     puts "Sorry,you say trash, I kill you!"
+    puts "Write a command:"
+    list_command = gets.chomp
+    next
   end
-puts "Write a command:"
 
-answer = gets.chomp.split(" ").join("_")
+  answer = gets.chomp.split(" ")
 
-command1.send(answer.to_sym)
+  case  answer[0]
+    when "drive","open"
+      command1.send(:action,answer[0], answer[1])
+    when "enable"
+      command1.send(:enable,answer[0])
+    when "random"
+      command1.send(:random)
+    else
+      puts "allo, vi sho, ebobo? ya boevoi robot"
+      puts "Write a command:"
+      list_command = gets.chomp
+      next
+  end
 
+  sleep 2
+  puts "Complete"
 
-puts "If you want another action, write the 'yes',else write 'exit' for turn off me"
+  puts "If you want another action, write the 'yes',else write 'exit' for turn off me"
 
-continue = gets.chomp
+  continue = gets.chomp
 
   if continue == "yes"
     puts "write 'command':"
-      next
+    next
   elsif continue == "exit"
-      puts "Good bye, my darling"
+    puts "Good bye, my darling"
     break
-      puts "Ti cho,balnoy?"
   end
 end
 
